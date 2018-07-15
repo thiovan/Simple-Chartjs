@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+	<title>area > boundaries | Chart.js sample</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+</head>
+<body>
+	<div class="content">
+		<canvas id="myChart"></canvas>
+	</div>
+
+	<script>
+		var sumbuX = [];
+		var sumbuY = [];
+
+		$.ajax({
+			type: "GET",
+			url: "data.php",
+			success: function(data){
+				var data = JSON.parse(data);
+
+				$.each(data.x, function(key, value) {
+					sumbuX.push(value);
+				});
+				$.each(data.y, function(key, value) {
+					sumbuY.push(value);
+				});
+
+				createChart();
+			}
+		});
+
+		function createChart(){
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: sumbuX,
+					datasets: [{
+						label: 'MyLabel',
+						data: sumbuY,
+						backgroundColor: 'rgba(255, 99, 132, 0.2)',
+						borderColor: 'rgba(255, 99, 132, 1)',
+						fill: true
+					}]
+				},
+				options: {
+					elements: {
+						line: {
+							tension: 0.000001
+						}
+					},
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+			});
+		}
+		
+	</script>
+</body>
+</html>
